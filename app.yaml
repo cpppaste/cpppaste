@@ -1,0 +1,25 @@
+application: cpppaste
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: no
+
+handlers:
+
+- url: /js
+  static_dir: js
+
+- url: /codes
+  static_dir: codes
+
+- url: /submit
+  script: submit.py
+  
+- url: /code/.*
+  script: code.py
+  
+- url: /getentry
+  script: code.py
+  
+- url: /.*
+  script: main.py

@@ -1,0 +1,1 @@
+function getEntry(id, highlight) {	$.ajax({		url: 'http://localhost:8080/getentry',		type: 'get',				data: {			'id' : id,			'highlight' : highlight		},				success: function(data) {			alert(data);		},				error: function() {			alert('error');		}	});}
