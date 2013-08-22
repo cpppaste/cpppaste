@@ -9,6 +9,9 @@ handlers:
 - url: /js
   static_dir: js
 
+- url: /css
+  static_dir: css
+  
 - url: /codes
   static_dir: codes
 
@@ -16,10 +19,10 @@ handlers:
   script: submit.py
   
 - url: /code/.*
-  script: code.py
+  script: main.py
   
 - url: /getentry
-  script: code.py
+  script: main.py
   
 - url: /.*
   script: main.py

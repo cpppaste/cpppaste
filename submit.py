@@ -10,7 +10,6 @@ from google.appengine.ext import db
 from utills import *
 
 
-
 class Submit(webapp.RequestHandler):
 	def post(self):
 		entry = Entry()

@@ -12,6 +12,12 @@ submission_length = 8
 def getIdLength():
 	return submission_length
 	
+def getIdFromUrl(url):
+	url = url[-getIdLength()::]
+	if url.isalpha():
+		return url
+	return "none"
+	
 def isValidId(id):
 	if not id:
 		return False

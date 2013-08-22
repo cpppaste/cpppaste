@@ -1,125 +1,83 @@
-print 'Content-Type: text/html; charset=UTF-8'
-print ''
+import cgi
 
-print '''
+from google.appengine.api import users
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext import db
 
-<html>
+from utills import *
+from DataStoreHelper import *
 
-<head>
+from code import *
+from getEntry import *
 
-<style>
 
-.tableStyle
-{
-	position: absolute;
-	/* top: 50%; */
-    left: 50%;
-    width: 650px; /*              */
-    height: 650px; /*              */
-    /* margin-top: -325px; */ 
-    margin-left: -325px; /*                                             ,                                                        */
-}
+class Main(webapp.RequestHandler):
 
-.textStyle
-{
-	color: orange;
-	font-family: 'Times New Roman', Times, serif; /*                  */ 
-    font-size: 120%; /*                           */ 
-}
+	languages = ['C++', 
+				 'Java',
+				 'Python',
+				 'Other...'
+				]
+	
+	def getLanguageFormPart(self):
+		self.response.out.write('<select id=language name=lang class=shadow>');
+		for language in self.languages:
+			self.response.out.write('<option>' + language + '</option>');
+		self.response.out.write('</select>');
 
-.textareaStyle
-{
-	width: 100%;
-	height: 100%;
+	def get(self):
+
+		self.response.out.write('<html>')
+		self.response.out.write('<head>')
+		self.response.out.write('<link rel="stylesheet" type="text/css" href="css/style.css" />')
+		self.response.out.write('<script src="js/jQuery.js"></script>')
+		self.response.out.write('<script src="js/main.js"></script>')
+		self.response.out.write('</head>')
+		self.response.out.write('<body>')
+
+		self.response.out.write('<form action="submit" method="post">')
+		self.response.out.write('<table class="tableStyle">')
+		self.response.out.write('<tr class="langRow">')
+		self.response.out.write('<td>')
+		self.getLanguageFormPart()
+		self.response.out.write('</td>')
+		self.response.out.write('</tr>')
  
-	border-color: orange; /*              */ 
-    border-style: solid; /*               */ 
+		self.response.out.write('''<tr class="commentRow"> 
+			<td><div class=textStyle>Comment:</div></td>
+			<td><input class="textareaStyle shadow" type="text" name="comment"><br></td>
+		</tr>
  
-	border-width: 1px;
-}
-
-.shadow
-{
-	/* http://htmlbook.ru/css/box-shadow */
-	-moz-box-shadow:    0 0 10px rgba(0,0,0,0.5); /* Для Firefox */
-	-webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Для Safari и Chrome */
-    box-shadow:         0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
-}
-
-.langRow
-{
-	height: 6%;
-}
-
-.commentRow
-{
-	height: 6%;
-}
-
-.submitRow
-{
-	height: 6%;
-}
-
-.commentStyle
-{
-	width: 100%;
-	height: 100%;
-}
-
-</style>
-
-</head>
-
-<body>
-
- <form action="submit" method="post">
- 
-  <table class="tableStyle">
- 
-  <tr class="langRow">
-   <td>
-    <select name="lang" class=shadow>
-     <option>C++</option>
-	 <option>Java</option>
-	 <option>Python</option>
-     <option>Other...</option>
-    </select>
-   </td>
-  </tr>
- 
-  <tr class="commentRow">
-   <td>
-    <div class=textStyle>Comment:</div>
-   </td>
+		<tr>
+			<td colspan="2"><textarea name="code" class="textareaStyle shadow"></textarea></td>
+		</tr>
   
-   <td>
-    <input class="textareaStyle shadow" type="text" name="comment"><br>
-   </td>
-  </tr>
+		<tr class="submitRow">
+			<td><input id=submit onclick="submitAction()" class="button" type="submit" value="Submit"></td>
+		</tr>
  
-  <tr>
-   <td colspan="2">
-    <textarea name="code" class="textareaStyle shadow"></textarea>
-   </td>
-  </tr>
-  
-  <tr class="submitRow">
-   <td>
-    <input type="submit" value="Submit">
-   </td>
-  </tr>
- 
-  </table>
- 
-  
- 
+		</table> 
  </form>
- 
 </body>
+</html>''')
 
-</html>
 
-'''
+
+
+application = webapp.WSGIApplication(
+                                     [
+										('/', Main),
+										('/code/.*', Code),
+										('/getentry', GetEntry)
+									 ],
+                                     debug=True)
+
+def main():
+	run_wsgi_app(application)
+
+if __name__ == "__main__":
+	main()
+
 
 
