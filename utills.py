@@ -50,3 +50,8 @@ class Entry(db.Model):
 	id =      db.StringProperty(multiline = False)
 	IP =      db.StringProperty(multiline = False)
 	
+class User(db.Model):
+	username = db.StringProperty(multiline = False)
+	password = db.StringProperty(multiline = False)
+	#admin =    db.StringProperty(multiline = False)
+	

@@ -1,15 +1,18 @@
-import cgi
+import cgi, imp, sys
 
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
+sys.path.append("Admin")
+
 from utills import *
 from DataStoreHelper import *
 
 from code import *
 from getEntry import *
+from admin_login import *
 
 
 class Main(webapp.RequestHandler):
@@ -69,7 +72,8 @@ application = webapp.WSGIApplication(
                                      [
 										('/', Main),
 										('/code/.*', Code),
-										('/getentry', GetEntry)
+										('/getentry', GetEntry),
+										('/admin-login', AdminLogin)
 									 ],
                                      debug=True)
 
