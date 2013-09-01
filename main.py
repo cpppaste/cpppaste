@@ -1,21 +1,12 @@
-import cgi, imp, sys
-
-from google.appengine.api import users
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext import db
-
-sys.path.append("Admin")
-
 from utills import *
-from DataStoreHelper import *
+
+sys.path.append("Auth")
 
 from code import *
 from getEntry import *
-from admin_login import *
+from auth import *
 
-
-class Main(webapp.RequestHandler):
+class Main(RequestHandlerEx):
 
 	languages = ['C++', 
 				 'Java',
@@ -24,30 +15,30 @@ class Main(webapp.RequestHandler):
 				]
 	
 	def getLanguageFormPart(self):
-		self.response.out.write('<select id=language name=lang class=shadow>');
+		self.o('<select id=language name=lang class=shadow>');
 		for language in self.languages:
-			self.response.out.write('<option>' + language + '</option>');
-		self.response.out.write('</select>');
+			self.o('<option>' + language + '</option>');
+		self.o('</select>');
 
 	def get(self):
 
-		self.response.out.write('<html>')
-		self.response.out.write('<head>')
-		self.response.out.write('<link rel="stylesheet" type="text/css" href="css/style.css" />')
-		self.response.out.write('<script src="js/jQuery.js"></script>')
-		self.response.out.write('<script src="js/main.js"></script>')
+		self.o('<html>')
+		self.o('<head>')
+		self.o('<link rel="stylesheet" type="text/css" href="css/style.css" />')
+		self.o('<script src="js/jQuery.js"></script>')
+		self.o('<script src="js/main.js"></script>')
 		self.response.out.write('</head>')
 		self.response.out.write('<body>')
 
-		self.response.out.write('<form action="submit" method="post">')
-		self.response.out.write('<table class="tableStyle">')
-		self.response.out.write('<tr class="langRow">')
-		self.response.out.write('<td>')
+		self.o('<form action="submit" method="post">')
+		self.o('<table class="tableStyle">')
+		self.o('<tr class="langRow">')
+		self.o('<td>')
 		self.getLanguageFormPart()
-		self.response.out.write('</td>')
-		self.response.out.write('</tr>')
+		self.o('</td>')
+		self.o('</tr>')
  
-		self.response.out.write('''<tr class="commentRow"> 
+		self.o('''<tr class="commentRow"> 
 			<td><div class=textStyle>Comment:</div></td>
 			<td><input class="textareaStyle shadow" type="text" name="comment"><br></td>
 		</tr>
@@ -73,7 +64,7 @@ application = webapp.WSGIApplication(
 										('/', Main),
 										('/code/.*', Code),
 										('/getentry', GetEntry),
-										('/admin-login', AdminLogin)
+										('/auth', Auth)
 									 ],
                                      debug=True)
 
